@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>로이터 데이터셋을 이용한 뉴스 기사 다중 분류 | CodingCrew</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="MLDNNKeras">
+  
+  
+  
+  
+  <meta name="description" content="다중 분류 문제 : Multiple class classification이번 포스팅에서는 2개 이상의 클래스를 가진 경우 사용할 수 있는 다중 분류 문제를 해결해보도록 한다.   Dataset로이터 데이터셋을 사용하도록 한다.데이터셋은 46개의 토픽을 갖고 있으며 각 뉴스기사마다 하나의 토픽이 정해져있다.즉, 단일 레이블 다중분류 문제로 볼 수 있다. Do">
+<meta name="keywords" content="ML,DNN,Keras">
+<meta property="og:type" content="article">
+<meta property="og:title" content="로이터 데이터셋을 이용한 뉴스 기사 다중 분류">
+<meta property="og:url" content="https://codingcrews.github.io/2019/01/14/reuter_multi_classification/index.html">
+<meta property="og:site_name" content="CodingCrew">
+<meta property="og:description" content="다중 분류 문제 : Multiple class classification이번 포스팅에서는 2개 이상의 클래스를 가진 경우 사용할 수 있는 다중 분류 문제를 해결해보도록 한다.   Dataset로이터 데이터셋을 사용하도록 한다.데이터셋은 46개의 토픽을 갖고 있으며 각 뉴스기사마다 하나의 토픽이 정해져있다.즉, 단일 레이블 다중분류 문제로 볼 수 있다. Do">
+<meta property="og:locale" content="ko">
+<meta property="og:image" content="https://codingcrews.github.io/resources/reuter_multi_classification_files/reuter_multi_classification_27_0.png">
+<meta property="og:image" content="https://codingcrews.github.io/resources/reuter_multi_classification_files/reuter_multi_classification_41_0.png">
+<meta property="og:updated_time" content="2019-01-14T14:29:37.993Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="로이터 데이터셋을 이용한 뉴스 기사 다중 분류">
+<meta name="twitter:description" content="다중 분류 문제 : Multiple class classification이번 포스팅에서는 2개 이상의 클래스를 가진 경우 사용할 수 있는 다중 분류 문제를 해결해보도록 한다.   Dataset로이터 데이터셋을 사용하도록 한다.데이터셋은 46개의 토픽을 갖고 있으며 각 뉴스기사마다 하나의 토픽이 정해져있다.즉, 단일 레이블 다중분류 문제로 볼 수 있다. Do">
+<meta name="twitter:image" content="https://codingcrews.github.io/resources/reuter_multi_classification_files/reuter_multi_classification_27_0.png">
+  
+    <link rel="alternate" href="/atom.xml" title="CodingCrew" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;" href="#" data-toggle="modal" data-target="#myModal">
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="">
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something...">
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </ul></div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-reuter_multi_classification" style="width: 75%; float:left;" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      로이터 데이터셋을 이용한 뉴스 기사 다중 분류
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/01/14/reuter_multi_classification/" class="article-date">
+	  <time datetime="2019-01-14T14:27:59.000Z" itemprop="datePublished">2019-01-14</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/ML/">ML</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="다중-분류-문제-Multiple-class-classification"><a href="#다중-분류-문제-Multiple-class-classification" class="headerlink" title="다중 분류 문제 : Multiple class classification"></a>다중 분류 문제 : Multiple class classification</h1><p>이번 포스팅에서는 2개 이상의 클래스를 가진 경우 사용할 수 있는 다중 분류 문제를 해결해보도록 한다.  </p>
+<h1 id="Dataset"><a href="#Dataset" class="headerlink" title="Dataset"></a>Dataset</h1><p>로이터 데이터셋을 사용하도록 한다.<br>데이터셋은 46개의 토픽을 갖고 있으며 각 뉴스기사마다 하나의 토픽이 정해져있다.<br>즉, 단일 레이블 다중분류 문제로 볼 수 있다.</p>
+<h2 id="Download"><a href="#Download" class="headerlink" title="Download"></a>Download</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tensorflow.keras.datasets <span class="keyword">import</span> reuters</span><br><span class="line">(train_data, train_labels), (test_data, test_labels) = reuters.load_data(num_words=<span class="number">10000</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="Dataset-shape-확인"><a href="#Dataset-shape-확인" class="headerlink" title="Dataset shape 확인"></a>Dataset shape 확인</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">"Train Datas Shape : &#123;&#125;"</span>.format(train_data.shape))</span><br><span class="line">print(<span class="string">"Train Labels Shape : &#123;&#125;"</span>.format(train_labels.shape))</span><br></pre></td></tr></table></figure>
+<pre><code>Train Datas Shape : (8982,)
+Train Labels Shape : (8982,)
+</code></pre><h2 id="데이터-확인"><a href="#데이터-확인" class="headerlink" title="데이터 확인"></a>데이터 확인</h2><p>확인한대로 8982개의 훈련 데이터셋이 존재하며,<br>각 인덱스는 단어 인덱스의 리스트를 뜻 한다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">display(train_data[<span class="number">0</span>][:<span class="number">10</span>])</span><br><span class="line">display(train_labels)</span><br><span class="line"></span><br><span class="line">display(test_labels)</span><br></pre></td></tr></table></figure>
+<pre><code>[1, 2, 2, 8, 43, 10, 447, 5, 25, 207]
+
+
+
+array([ 3,  4,  3, ..., 25,  3, 25])
+
+
+
+array([ 3, 10,  1, ...,  3,  3, 24])
+</code></pre><h3 id="단어를-텍스트로-디코딩"><a href="#단어를-텍스트로-디코딩" class="headerlink" title="단어를 텍스트로 디코딩"></a>단어를 텍스트로 디코딩</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">word_index = reuters.get_word_index()</span><br><span class="line">reverse_word_index = dict([(val, key) <span class="keyword">for</span> (key, val) <span class="keyword">in</span> word_index.items()])</span><br><span class="line">decoded_news = <span class="string">' '</span>.join([reverse_word_index.get(i - <span class="number">3</span>, <span class="string">'?'</span>) <span class="keyword">for</span> i <span class="keyword">in</span> train_data[<span class="number">0</span>]])</span><br><span class="line">print(decoded_news)</span><br></pre></td></tr></table></figure>
+<pre><code>? ? ? said as a result of its december acquisition of space co it expects earnings per share in 1987 of 1 15 to 1 30 dlrs per share up from 70 cts in 1986 the company said pretax net should rise to nine to 10 mln dlrs from six mln dlrs in 1986 and rental operation revenues to 19 to 22 mln dlrs from 12 5 mln dlrs it said cash flow per share this year should be 2 50 to three dlrs reuter 3
+</code></pre><h3 id="라벨-확인"><a href="#라벨-확인" class="headerlink" title="라벨 확인"></a>라벨 확인</h3><p>샘플의 라벨은 토픽의 인덱스로써 0~45의 값을 가진다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">train_labels[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<pre><code>3
+</code></pre><h3 id="데이터-변환"><a href="#데이터-변환" class="headerlink" title="데이터 변환"></a>데이터 변환</h3><p>학습에 용이하도록 뉴스 기사와 라벨 데이터를 벡터로 변환시킨다.<br>학습에 사용되는 데이터셋의 인풋 데이터는 해당 뉴스 기사의 들어가있는 단어 인덱스를 1.0 으로 변경시킨다.  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">vectorize_sequences</span><span class="params">(sequences, dimension=<span class="number">10000</span>)</span>:</span></span><br><span class="line">    results = np.zeros((len(sequences), dimension)) <span class="comment"># 크기가 들어온 리스트 (단어개수, 전체단어개수)이고, 모든 원소가 0인 행렬을 생성</span></span><br><span class="line">    <span class="keyword">for</span> i, sequence <span class="keyword">in</span> enumerate(sequences):</span><br><span class="line">        results[i, sequence] = <span class="number">1.</span></span><br><span class="line">    <span class="keyword">return</span> results</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tensorflow.keras.utils <span class="keyword">import</span> to_categorical</span><br><span class="line"></span><br><span class="line">x_train = vectorize_sequences(train_data)</span><br><span class="line">x_test = vectorize_sequences(test_data)</span><br><span class="line"></span><br><span class="line">display(x_train.shape)</span><br><span class="line">display(x_test.shape)</span><br><span class="line"></span><br><span class="line">one_hot_train_labels = to_categorical(train_labels)</span><br><span class="line">one_hot_test_labels = to_categorical(test_labels)</span><br><span class="line"></span><br><span class="line">display(one_hot_train_labels.shape)</span><br><span class="line">display(one_hot_test_labels.shape)</span><br></pre></td></tr></table></figure>
+<pre><code>(8982, 10000)
+
+
+
+(2246, 10000)
+
+
+
+(8982, 46)
+
+
+
+(2246, 46)
+</code></pre><h1 id="신경망-구성"><a href="#신경망-구성" class="headerlink" title="신경망 구성"></a>신경망 구성</h1><p>단일 레이블 다중 분류를 위한 모델을 작성 해보도록 하겠다.<br>다만 레이어 구축 시 참고해야 할 부분이 있는데,<br>각 레이어를 통과 할 때 유닛의 수가 레이블 보다 적다면 가지고 있어야 할 정보가 많이 사라질 수 있다.  </p>
+<p>학습 시 파라미터를 줄이기 위해서나 노이즈를 줄이기 위해서 유닛을 줄이는 경우도 있지만,<br>데이터가 가지고 있어야 할 필수 데이터를 잃어버릴 수 있다는 점도 참고하여 네트워크를 구성해야 한다.</p>
+<h2 id="신경망-네트워크-구축"><a href="#신경망-네트워크-구축" class="headerlink" title="신경망 네트워크 구축"></a>신경망 네트워크 구축</h2><p>로이터 데이터셋의 단어수를 10,000개로 제한해두었으니,<br>신경망의 입력 차원수도 10,000으로 설정한다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> models</span><br><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> layers</span><br><span class="line"></span><br><span class="line">model = models.Sequential()</span><br><span class="line">model.add(layers.Dense(<span class="number">64</span>, activation=<span class="string">'relu'</span>, input_shape=(<span class="number">10000</span>, )))</span><br><span class="line">model.add(layers.Dense(<span class="number">64</span>, activation=<span class="string">'relu'</span>))</span><br><span class="line">model.add(layers.Dense(<span class="number">46</span>, activation=<span class="string">'softmax'</span>))</span><br><span class="line"></span><br><span class="line">model.summary()</span><br></pre></td></tr></table></figure>
+<pre><code>_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+dense_3 (Dense)              (None, 64)                640064    
+_________________________________________________________________
+dense_4 (Dense)              (None, 64)                4160      
+_________________________________________________________________
+dense_5 (Dense)              (None, 46)                2990      
+=================================================================
+Total params: 647,214
+Trainable params: 647,214
+Non-trainable params: 0
+_________________________________________________________________
+</code></pre><p>이진분류와 비슷하게 마지막 Dense 레이어의 아웃풋 벡터 개수는(46개) 예측하기 위한 클래스의 개수와 동일합니다.<br>다른점은 이진 분류에서는 활성함수로 sigmoid를 사용한 반면 여기서는 softmax를 이용했는데,<br>softmax는 각 클래스별로 해당 클래스 일 확률을 표시하도록 만들어집니다.   </p>
+<h2 id="모델-컴파일"><a href="#모델-컴파일" class="headerlink" title="모델 컴파일"></a>모델 컴파일</h2><p>다중 분류에서 손실함수로써는 categorical_crossentropy를 주로 사용합니다.<br>옵티마이저는 가장 빠르고 효과가 좋다고 알려진 adam 옵티마이저를 사용하도록 설정합니다.  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">model.compile(</span><br><span class="line">    optimizer=<span class="string">'adam'</span>,</span><br><span class="line">    loss=<span class="string">'categorical_crossentropy'</span>,</span><br><span class="line">    metrics=[<span class="string">'accuracy'</span>],</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h2 id="검증-데이터셋-구성"><a href="#검증-데이터셋-구성" class="headerlink" title="검증 데이터셋 구성"></a>검증 데이터셋 구성</h2><p>훈련용 데이터셋에서 Validation으로 사용할 데이터셋을 분리시킨다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">x_val = x_train[:<span class="number">1000</span>]</span><br><span class="line">partial_x_train = x_train[<span class="number">1000</span>:]</span><br><span class="line"></span><br><span class="line">y_val = one_hot_train_labels[:<span class="number">1000</span>]</span><br><span class="line">partial_y_train = one_hot_train_labels[<span class="number">1000</span>:]</span><br></pre></td></tr></table></figure>
+<h1 id="모델-학습"><a href="#모델-학습" class="headerlink" title="모델 학습"></a>모델 학습</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">history = model.fit(</span><br><span class="line">    partial_x_train, </span><br><span class="line">    partial_y_train,</span><br><span class="line">    epochs=<span class="number">20</span>,</span><br><span class="line">    batch_size=<span class="number">512</span>,</span><br><span class="line">    validation_data=(x_val, y_val)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<pre><code>Train on 7982 samples, validate on 1000 samples
+Epoch 1/20
+7982/7982 [==============================] - 1s 152us/step - loss: 3.3032 - acc: 0.4328 - val_loss: 2.6156 - val_acc: 0.5320
+Epoch 2/20
+7982/7982 [==============================] - 1s 78us/step - loss: 2.0615 - acc: 0.6076 - val_loss: 1.6695 - val_acc: 0.6460
+Epoch 3/20
+7982/7982 [==============================] - 1s 78us/step - loss: 1.3844 - acc: 0.7051 - val_loss: 1.3219 - val_acc: 0.7100
+Epoch 4/20
+7982/7982 [==============================] - 1s 77us/step - loss: 1.0796 - acc: 0.7669 - val_loss: 1.1773 - val_acc: 0.7520
+Epoch 5/20
+7982/7982 [==============================] - 1s 79us/step - loss: 0.8673 - acc: 0.8132 - val_loss: 1.0768 - val_acc: 0.7790
+Epoch 6/20
+7982/7982 [==============================] - 1s 78us/step - loss: 0.6909 - acc: 0.8515 - val_loss: 0.9995 - val_acc: 0.7910
+Epoch 7/20
+7982/7982 [==============================] - 1s 78us/step - loss: 0.5410 - acc: 0.8880 - val_loss: 0.9467 - val_acc: 0.8010
+Epoch 8/20
+7982/7982 [==============================] - 1s 78us/step - loss: 0.4177 - acc: 0.9137 - val_loss: 0.9069 - val_acc: 0.8190
+Epoch 9/20
+7982/7982 [==============================] - 1s 78us/step - loss: 0.3253 - acc: 0.9300 - val_loss: 0.8855 - val_acc: 0.8160
+Epoch 10/20
+7982/7982 [==============================] - 1s 79us/step - loss: 0.2593 - acc: 0.9432 - val_loss: 0.8973 - val_acc: 0.8090
+Epoch 11/20
+7982/7982 [==============================] - 1s 80us/step - loss: 0.2123 - acc: 0.9503 - val_loss: 0.8912 - val_acc: 0.8210
+Epoch 12/20
+7982/7982 [==============================] - 1s 78us/step - loss: 0.1792 - acc: 0.9549 - val_loss: 0.9012 - val_acc: 0.8230
+Epoch 13/20
+7982/7982 [==============================] - 1s 78us/step - loss: 0.1594 - acc: 0.9565 - val_loss: 0.9194 - val_acc: 0.8170
+Epoch 14/20
+7982/7982 [==============================] - 1s 78us/step - loss: 0.1410 - acc: 0.9573 - val_loss: 0.9531 - val_acc: 0.8150
+Epoch 15/20
+7982/7982 [==============================] - 1s 79us/step - loss: 0.1294 - acc: 0.9578 - val_loss: 0.9501 - val_acc: 0.8160
+Epoch 16/20
+7982/7982 [==============================] - 1s 78us/step - loss: 0.1192 - acc: 0.9603 - val_loss: 0.9757 - val_acc: 0.8130
+Epoch 17/20
+7982/7982 [==============================] - 1s 77us/step - loss: 0.1146 - acc: 0.9592 - val_loss: 0.9701 - val_acc: 0.8100
+Epoch 18/20
+7982/7982 [==============================] - 1s 79us/step - loss: 0.1058 - acc: 0.9600 - val_loss: 0.9883 - val_acc: 0.8080
+Epoch 19/20
+7982/7982 [==============================] - 1s 80us/step - loss: 0.1055 - acc: 0.9624 - val_loss: 1.0214 - val_acc: 0.8130
+Epoch 20/20
+7982/7982 [==============================] - 1s 81us/step - loss: 0.0979 - acc: 0.9622 - val_loss: 0.9970 - val_acc: 0.8150
+</code></pre><h2 id="훈련의-정확도와-손실-시각화"><a href="#훈련의-정확도와-손실-시각화" class="headerlink" title="훈련의 정확도와 손실 시각화"></a>훈련의 정확도와 손실 시각화</h2><p>이전 이진분류 포스팅에서 사용했던 함수를 그대로 끌어와 사용하도록 한다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show_graph</span><span class="params">(history)</span>:</span></span><br><span class="line">    history_dict = history.history</span><br><span class="line">    accuracy = history_dict[<span class="string">'acc'</span>]</span><br><span class="line">    val_accuracy = history_dict[<span class="string">'val_acc'</span>]</span><br><span class="line">    loss = history_dict[<span class="string">'loss'</span>]</span><br><span class="line">    val_loss = history_dict[<span class="string">'val_loss'</span>]</span><br><span class="line"></span><br><span class="line">    epochs = range(<span class="number">1</span>, len(loss) + <span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">    plt.figure(figsize=(<span class="number">16</span>, <span class="number">1</span>))</span><br><span class="line">    </span><br><span class="line">    plt.subplot(<span class="number">121</span>)</span><br><span class="line">    plt.subplots_adjust(top=<span class="number">2</span>)</span><br><span class="line">    plt.plot(epochs, accuracy, <span class="string">'ro'</span>, label=<span class="string">'Training accuracy'</span>)</span><br><span class="line">    plt.plot(epochs, val_accuracy, <span class="string">'r'</span>, label=<span class="string">'Validation accuracy'</span>)</span><br><span class="line">    plt.title(<span class="string">'Trainging and validation accuracy'</span>)</span><br><span class="line">    plt.xlabel(<span class="string">'Epochs'</span>)</span><br><span class="line">    plt.ylabel(<span class="string">'Accuracy and Loss'</span>)</span><br><span class="line"></span><br><span class="line">    plt.legend(loc=<span class="string">'upper center'</span>, bbox_to_anchor=(<span class="number">0.5</span>, <span class="number">-0.1</span>),</span><br><span class="line">              fancybox=<span class="keyword">True</span>, shadow=<span class="keyword">True</span>, ncol=<span class="number">5</span>)</span><br><span class="line"><span class="comment">#     plt.legend(bbox_to_anchor=(1, -0.1))</span></span><br><span class="line"></span><br><span class="line">    plt.subplot(<span class="number">122</span>)</span><br><span class="line">    plt.plot(epochs, loss, <span class="string">'bo'</span>, label=<span class="string">'Training loss'</span>)</span><br><span class="line">    plt.plot(epochs, val_loss, <span class="string">'b'</span>, label=<span class="string">'Validation loss'</span>)</span><br><span class="line">    plt.title(<span class="string">'Training and validation loss'</span>)</span><br><span class="line">    plt.xlabel(<span class="string">'Epochs'</span>)</span><br><span class="line">    plt.ylabel(<span class="string">'Loss'</span>)</span><br><span class="line">    plt.legend(loc=<span class="string">'upper center'</span>, bbox_to_anchor=(<span class="number">0.5</span>, <span class="number">-0.1</span>),</span><br><span class="line">          fancybox=<span class="keyword">True</span>, shadow=<span class="keyword">True</span>, ncol=<span class="number">5</span>)</span><br><span class="line"><span class="comment">#     plt.legend(bbox_to_anchor=(1, 0))</span></span><br><span class="line"></span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show_graph(history)</span><br></pre></td></tr></table></figure>
+<p><img src="/resources/reuter_multi_classification_files/reuter_multi_classification_27_0.png" alt="png"></p>
+<p>그래프를 보면 대략 8~9번째 에폭부터 과대적합이 시작되는걸 알 수 있습니다.  </p>
+<h2 id="새로운-데이터-예측해보기"><a href="#새로운-데이터-예측해보기" class="headerlink" title="새로운 데이터 예측해보기"></a>새로운 데이터 예측해보기</h2><p>모델을 이용해 각 뉴스기사에 대한 토픽을 예측해보도록 합니다.<br>softmax를 사용하여 각 뉴스별로 46개의 토픽에 해당하는 확률을 출력합니다.<br>각 클래스 별 확률을 모두 더하면 1.0(100%)가 됩니다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">predictions = model.predict(x_test)</span><br><span class="line">display(predictions.shape)</span><br></pre></td></tr></table></figure>
+<pre><code>(2246, 46)
+</code></pre><p>predictions는 테스트 데이터셋의 개수에 맞게 2246개의 결과가 들어있습니다.<br>각 결과안에는 46개 클래스에 해당하는 확률값이 들어가있습니다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">np.sum(predictions[<span class="number">0</span>])</span><br></pre></td></tr></table></figure>
+<pre><code>1.0
+</code></pre><p>각 46개의 모든 원소의 값을 모두 더하면 1.0(100%)가 된걸 확인할 수 있습니다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">display(np.argmax(predictions[<span class="number">0</span>]))</span><br><span class="line">display(predictions[<span class="number">0</span>][<span class="number">3</span>])</span><br></pre></td></tr></table></figure>
+<pre><code>3
+
+
+
+0.96262544
+</code></pre><p>predictions[0]의 3번째 인덱스가 가장 큰 값을 가진걸 확인하였고,<br>해당 인덱스의 값을 확인하였더니 0.96262544(96.262544%)로 모델이 예측한걸 확인할 수 있습니다.</p>
+<h2 id="데이터-레이블-인코딩-방식-변경하여-학습하기"><a href="#데이터-레이블-인코딩-방식-변경하여-학습하기" class="headerlink" title="데이터 레이블 인코딩 방식 변경하여 학습하기"></a>데이터 레이블 인코딩 방식 변경하여 학습하기</h2><p>one hot 인코딩이 아닌 정수형으로 토픽을 예측하도록 레이블 인코딩을 사용하도록 변경해본다.<br>손실함수를 변경해주면 되는데,<br>categorical_crossentropy는 범주형 인코딩일 시 사용하는 손실함수이고,<br>정수형을 사용할 때에는 sparse_categorical_crossentropy를 사용한다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">y_train = np.array(train_labels)</span><br><span class="line">y_test = np.array(test_labels)</span><br><span class="line"></span><br><span class="line">x_val = x_train[:<span class="number">1000</span>]</span><br><span class="line">partial_x_train = x_train[<span class="number">1000</span>:]</span><br><span class="line"></span><br><span class="line">y_val = y_train[:<span class="number">1000</span>]</span><br><span class="line">partial_y_train = y_train[<span class="number">1000</span>:]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">model = models.Sequential()</span><br><span class="line">model.add(layers.Dense(<span class="number">64</span>, activation=<span class="string">'relu'</span>, input_shape=(<span class="number">10000</span>, )))</span><br><span class="line">model.add(layers.Dense(<span class="number">64</span>, activation=<span class="string">'relu'</span>))</span><br><span class="line">model.add(layers.Dense(<span class="number">46</span>, activation=<span class="string">'softmax'</span>))</span><br><span class="line"></span><br><span class="line">model.summary()</span><br></pre></td></tr></table></figure>
+<pre><code>_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+dense_6 (Dense)              (None, 64)                640064    
+_________________________________________________________________
+dense_7 (Dense)              (None, 64)                4160      
+_________________________________________________________________
+dense_8 (Dense)              (None, 46)                2990      
+=================================================================
+Total params: 647,214
+Trainable params: 647,214
+Non-trainable params: 0
+_________________________________________________________________
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">model.compile(</span><br><span class="line">    optimizer=<span class="string">'adam'</span>,</span><br><span class="line">    loss=<span class="string">'sparse_categorical_crossentropy'</span>,</span><br><span class="line">    metrics=[<span class="string">'acc'</span>]</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">history = model.fit(</span><br><span class="line">    partial_x_train, </span><br><span class="line">    partial_y_train,</span><br><span class="line">    epochs=<span class="number">9</span>,</span><br><span class="line">    batch_size=<span class="number">512</span>,</span><br><span class="line">    validation_data=(x_val, y_val)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<pre><code>Train on 7982 samples, validate on 1000 samples
+Epoch 1/9
+7982/7982 [==============================] - 1s 116us/step - loss: 3.3313 - acc: 0.3983 - val_loss: 2.5661 - val_acc: 0.5770
+Epoch 2/9
+7982/7982 [==============================] - 1s 78us/step - loss: 2.0006 - acc: 0.6272 - val_loss: 1.6576 - val_acc: 0.6580
+Epoch 3/9
+7982/7982 [==============================] - 1s 78us/step - loss: 1.3389 - acc: 0.7134 - val_loss: 1.2907 - val_acc: 0.7090
+Epoch 4/9
+7982/7982 [==============================] - 1s 78us/step - loss: 1.0256 - acc: 0.7762 - val_loss: 1.1484 - val_acc: 0.7630
+Epoch 5/9
+7982/7982 [==============================] - 1s 80us/step - loss: 0.8077 - acc: 0.8339 - val_loss: 1.0422 - val_acc: 0.7870
+Epoch 6/9
+7982/7982 [==============================] - 1s 76us/step - loss: 0.6357 - acc: 0.8716 - val_loss: 0.9641 - val_acc: 0.8050
+Epoch 7/9
+7982/7982 [==============================] - 1s 78us/step - loss: 0.4960 - acc: 0.8990 - val_loss: 0.9275 - val_acc: 0.8050
+Epoch 8/9
+7982/7982 [==============================] - 1s 78us/step - loss: 0.3909 - acc: 0.9197 - val_loss: 0.8983 - val_acc: 0.8100
+Epoch 9/9
+7982/7982 [==============================] - 1s 78us/step - loss: 0.3116 - acc: 0.9346 - val_loss: 0.8843 - val_acc: 0.8190
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show_graph(history)</span><br></pre></td></tr></table></figure>
+<p><img src="/resources/reuter_multi_classification_files/reuter_multi_classification_41_0.png" alt="png"></p>
+<p>예측하는 방법은 아까와 동일하고,<br>출력된 레이블 또한 softmax처럼 각 클래스 별 확률이 나오게 된다.<br>9번의 에폭에서 과대적합 되던걸 확인하여 이번 학습은 최대 에폭을 9로 설정하여 학습을 진행한 내용의 그래프이다.</p>
+<h1 id="추가-개선사항"><a href="#추가-개선사항" class="headerlink" title="추가 개선사항"></a>추가 개선사항</h1><p>중간 레이어의 유닛수가 너무 작게 되면 데이터에 대한 손실이 발생할 수 있지만,<br>데이터를 압축하여 노이즈를 줄이는 효과를 얻을 수도 있고, 반대로 유닛수를 크게 한다면,<br>해당 레이블을 표현하기 위한 데이터를 더 넣을 수 있게 된다고 볼 수도 있다.<br>이러한 내용을 잘 숙지하여 레이어 구성을 변경해가며 테스트를 진행해보자.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>Rogiry
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/2019/01/14/reuter_multi_classification/" target="_blank" title="로이터 데이터셋을 이용한 뉴스 기사 다중 분류">https://codingcrews.github.io/2019/01/14/reuter_multi_classification/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+</div></div>
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80MjA4MC8xODYyNw==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/01/11/imdb/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">IMDB 데이터셋을 이용한 영화 리뷰 분류</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#다중-분류-문제-Multiple-class-classification"><span class="nav-number">1.</span> <span class="nav-text">다중 분류 문제 : Multiple class classification</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Dataset"><span class="nav-number">2.</span> <span class="nav-text">Dataset</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Download"><span class="nav-number">2.1.</span> <span class="nav-text">Download</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dataset-shape-확인"><span class="nav-number">2.2.</span> <span class="nav-text">Dataset shape 확인</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#데이터-확인"><span class="nav-number">2.3.</span> <span class="nav-text">데이터 확인</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#단어를-텍스트로-디코딩"><span class="nav-number">2.3.1.</span> <span class="nav-text">단어를 텍스트로 디코딩</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#라벨-확인"><span class="nav-number">2.3.2.</span> <span class="nav-text">라벨 확인</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#데이터-변환"><span class="nav-number">2.3.3.</span> <span class="nav-text">데이터 변환</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#신경망-구성"><span class="nav-number">3.</span> <span class="nav-text">신경망 구성</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#신경망-네트워크-구축"><span class="nav-number">3.1.</span> <span class="nav-text">신경망 네트워크 구축</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#모델-컴파일"><span class="nav-number">3.2.</span> <span class="nav-text">모델 컴파일</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#검증-데이터셋-구성"><span class="nav-number">3.3.</span> <span class="nav-text">검증 데이터셋 구성</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#모델-학습"><span class="nav-number">4.</span> <span class="nav-text">모델 학습</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#훈련의-정확도와-손실-시각화"><span class="nav-number">4.1.</span> <span class="nav-text">훈련의 정확도와 손실 시각화</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#새로운-데이터-예측해보기"><span class="nav-number">4.2.</span> <span class="nav-text">새로운 데이터 예측해보기</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#데이터-레이블-인코딩-방식-변경하여-학습하기"><span class="nav-number">4.3.</span> <span class="nav-text">데이터 레이블 인코딩 방식 변경하여 학습하기</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#추가-개선사항"><span class="nav-number">5.</span> <span class="nav-text">추가 개선사항</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2019 - 2019 CodingCrew All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            CodingCrew
+          </div>
+          <div class="panel-body">
+            Copyright © 2019 Rogiry All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>
