@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>보스턴 집값 데이터를 이용한 선형 회귀 | CodingCrew</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="MLDNNKeras">
+  
+  
+  
+  
+  <meta name="description" content="선형 회귀 문제 : Linear Regression머신러닝으로 해결할 수 있는 문제 중 분류 문제들을 이전 포스팅에서 다뤄보았고,이번에는 연속된 데이터를 예측해야하는 회귀 문제를 보겠다.   회귀 문제란 예를 들어 주택에 대한 주위 범죄율, 세율 등의 데이터가 주어졌을 때 주택 가격을 예측하는것처럼연속된 값을 예측하는걸 회귀 문제라고 한다. Dataset사">
+<meta name="keywords" content="ML,DNN,Keras">
+<meta property="og:type" content="article">
+<meta property="og:title" content="보스턴 집값 데이터를 이용한 선형 회귀">
+<meta property="og:url" content="https://codingcrews.github.io/2019/01/15/boston_linear_regression/index.html">
+<meta property="og:site_name" content="CodingCrew">
+<meta property="og:description" content="선형 회귀 문제 : Linear Regression머신러닝으로 해결할 수 있는 문제 중 분류 문제들을 이전 포스팅에서 다뤄보았고,이번에는 연속된 데이터를 예측해야하는 회귀 문제를 보겠다.   회귀 문제란 예를 들어 주택에 대한 주위 범죄율, 세율 등의 데이터가 주어졌을 때 주택 가격을 예측하는것처럼연속된 값을 예측하는걸 회귀 문제라고 한다. Dataset사">
+<meta property="og:locale" content="ko">
+<meta property="og:image" content="https://codingcrews.github.io/resources/boston_linear_regression_files/boston_linear_regression_21_0.png">
+<meta property="og:updated_time" content="2019-01-14T18:09:34.885Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="보스턴 집값 데이터를 이용한 선형 회귀">
+<meta name="twitter:description" content="선형 회귀 문제 : Linear Regression머신러닝으로 해결할 수 있는 문제 중 분류 문제들을 이전 포스팅에서 다뤄보았고,이번에는 연속된 데이터를 예측해야하는 회귀 문제를 보겠다.   회귀 문제란 예를 들어 주택에 대한 주위 범죄율, 세율 등의 데이터가 주어졌을 때 주택 가격을 예측하는것처럼연속된 값을 예측하는걸 회귀 문제라고 한다. Dataset사">
+<meta name="twitter:image" content="https://codingcrews.github.io/resources/boston_linear_regression_files/boston_linear_regression_21_0.png">
+  
+    <link rel="alternate" href="/atom.xml" title="CodingCrew" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.png">
+  <link rel="apple-touch-icon" href="/css/images/logo.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;" href="#" data-toggle="modal" data-target="#myModal">
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/logo.png">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="">
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something...">
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </ul></div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-boston_linear_regression" style="width: 75%; float:left;" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      보스턴 집값 데이터를 이용한 선형 회귀
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/01/15/boston_linear_regression/" class="article-date">
+	  <time datetime="2019-01-14T18:06:54.000Z" itemprop="datePublished">2019-01-15</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/ml/">ML</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="선형-회귀-문제-Linear-Regression"><a href="#선형-회귀-문제-Linear-Regression" class="headerlink" title="선형 회귀 문제 : Linear Regression"></a>선형 회귀 문제 : Linear Regression</h1><p>머신러닝으로 해결할 수 있는 문제 중 분류 문제들을 이전 포스팅에서 다뤄보았고,<br>이번에는 연속된 데이터를 예측해야하는 회귀 문제를 보겠다.  </p>
+<p>회귀 문제란 예를 들어 주택에 대한 주위 범죄율, 세율 등의 데이터가 주어졌을 때 주택 가격을 예측하는것처럼<br>연속된 값을 예측하는걸 회귀 문제라고 한다.</p>
+<h1 id="Dataset"><a href="#Dataset" class="headerlink" title="Dataset"></a>Dataset</h1><p>사용하는 데이터셋은 카네기 멜런 대학교에서 제공하는 데이터셋으로 데이터의 값에 해당하는 설명은 <a href="http://lib.stat.cmu.edu/datasets/boston" target="_blank" rel="noopener">여기</a>에서 확인할 수 있다.</p>
+<h2 id="Download"><a href="#Download" class="headerlink" title="Download"></a>Download</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tensorflow.keras.datasets <span class="keyword">import</span> boston_housing</span><br><span class="line">(train_data, train_targets), (test_data, test_targets) = boston_housing.load_data()</span><br></pre></td></tr></table></figure>
+<h2 id="Dataset-shape-확인"><a href="#Dataset-shape-확인" class="headerlink" title="Dataset shape 확인"></a>Dataset shape 확인</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">"Train Datas Shape : &#123;&#125;"</span>.format(train_data.shape))</span><br><span class="line">print(<span class="string">"Train Labels Shape : &#123;&#125;"</span>.format(train_targets.shape))</span><br></pre></td></tr></table></figure>
+<pre><code>Train Datas Shape : (404, 13)
+Train Labels Shape : (404,)
+</code></pre><h2 id="데이터-확인"><a href="#데이터-확인" class="headerlink" title="데이터 확인"></a>데이터 확인</h2><p>각 컬럼별로 해당하는 데이터들을 확인할 수 있고, 레이블에는 해당 주택의 가격값이 들어가있는걸 확인할 수 있다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">display(train_data[<span class="number">0</span>])</span><br><span class="line">display(train_targets[<span class="number">0</span>:<span class="number">10</span>])</span><br></pre></td></tr></table></figure>
+<pre><code>array([  1.23247,   0.     ,   8.14   ,   0.     ,   0.538  ,   6.142  ,
+        91.7    ,   3.9769 ,   4.     , 307.     ,  21.     , 396.9    ,
+        18.72   ])
+
+
+
+array([15.2, 42.3, 50. , 21.1, 17.7, 18.5, 11.3, 15.6, 15.6, 14.4])
+</code></pre><h2 id="데이터-변환"><a href="#데이터-변환" class="headerlink" title="데이터 변환"></a>데이터 변환</h2><p>신경망 학습 시 차이가 큰 값을 신경망에 주입하면 학습이 잘 되지 않는다.<br>(0.01, 0.1)과 (1, 10)을 보면 비율대로만 보게되면 10배의 차이를 가지는걸 볼 수 있지만,<br>실수 체계에서 값의 차이는 어마어마하게 큰 차이로 볼 수 있다.<br>(1, 10)과 같은 데이터를 Sparse 하다라고 표현하며,<br>(0.01, 0.1)과 같은 밀도가 높은 데이터를 Dense 데이터라고 표현한다.  </p>
+<p>이렇게 Dense 데이터로 변경하는 과정이 필요한데, 이 부분을 Scaling 혹은 정규화 한다고 한다.  </p>
+<p>데이터의 정규화를 위해서 각 특성별 평균값을 뺀 이후에 표준편차로 나눠주게 되면,<br>특성의 중앙이 0에 가깝게 맞춰지고, 표준편차는 1로 된다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mean = train_data.mean(axis=<span class="number">0</span>)</span><br><span class="line">train_data -= mean</span><br><span class="line">std = train_data.std(axis=<span class="number">0</span>)</span><br><span class="line">train_data /= std</span><br><span class="line"></span><br><span class="line">test_data -= mean</span><br><span class="line">test_data /= std</span><br></pre></td></tr></table></figure>
+<h1 id="모델-구성"><a href="#모델-구성" class="headerlink" title="모델 구성"></a>모델 구성</h1><p>데이터셋이 작으므로 간단한 모델을 구성하는게 과대적합을 피하기가 손쉽다.  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> models</span><br><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> layers</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">build_network</span><span class="params">(input_shape=<span class="params">(<span class="number">0</span>,)</span>)</span>:</span></span><br><span class="line">    model = models.Sequential()</span><br><span class="line">    model.add(layers.Dense(<span class="number">64</span>, activation=<span class="string">'relu'</span>, input_shape=input_shape))</span><br><span class="line">    model.add(layers.Dense(<span class="number">64</span>, activation=<span class="string">'relu'</span>))</span><br><span class="line">    model.add(layers.Dense(<span class="number">1</span>))</span><br><span class="line">    model.compile(optimizer=<span class="string">'adam'</span>, loss=<span class="string">'mse'</span>, metrics=[<span class="string">'mae'</span>])</span><br><span class="line">    <span class="keyword">return</span> model</span><br></pre></td></tr></table></figure>
+<p>모델 구성의 마지막 Dense layer를 보면 활성함수가 지정 되어있지 않은걸 확인할 수 있는데,<br>우리가 필요한 데이터는 선형 데이터를 원하기 때문에 활성함수를 지정하지 않으면 스칼라 회귀를 위한 구성이 완성된다.<br>반대로 sigmoid 같은 활성화 함수를 적용하면 네트워크가 0~1 사이의 값을 만들도록 될 것이다.  </p>
+<p>우리가 필요한 데이터는 주택가격을 예측하기 위함으로 활성함수를 지정하지 않고 스칼라 회귀 값을 예측하도록 구성한다.  </p>
+<h2 id="K-Fold-Validation"><a href="#K-Fold-Validation" class="headerlink" title="K-Fold Validation"></a>K-Fold Validation</h2><p>데이터셋의 크기가 매우 작기 때문에 검증셋(Validation)의 크기도 매우 작아지게 되는데,<br>이때 데이터셋이 적어지면서 훈련세트 중 어느 한 특정 부분이 훈련세트로 사용되는지에 따라 모델의 정확도가 크게 달라질 수 있다.<br>이 이유는 훈련세트와 검증세트로 나눴을 때 각 값들의 분포도가 고르게 되지 못할 경우가 생기기 때문이다.  </p>
+<p>이런 상황에서 가장 좋은 방법은 K-겹 교차 검증(K-Fold Cross Validation)을 실시하는것인데,<br>데이터를 K개의 분할로 나누고 각각 K개의 모델을 만들어 K-1 개의 분할에서 훈련하고 나머지 분할에서 평가를 하는법이다.<br>이 점수는 각 검증 데이터셋의 평균으로 모델을 평가하게 된다.  </p>
+<p>즉, 여러 폴드의 데이터셋으로 나누어 교차검증을 함으로써 데이터 분포에 신경쓰지 않고 훈련세트의 모든 부분을 사용해 모델을 평가할 수 있는 장점이 있다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">k = <span class="number">4</span></span><br><span class="line">num_val_samples = len(train_data) // k</span><br><span class="line">num_epochs = <span class="number">150</span></span><br><span class="line">all_scores = []</span><br><span class="line">all_history = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(k):</span><br><span class="line">    print(<span class="string">'폴드 번호 #&#123;&#125;'</span>.format(i))</span><br><span class="line">    fold_start_index = i * num_val_samples</span><br><span class="line">    fold_end_index = (i + <span class="number">1</span>) * num_val_samples</span><br><span class="line">    </span><br><span class="line">    val_data = train_data[fold_start_index : fold_end_index]</span><br><span class="line">    val_targets = train_targets[fold_start_index : fold_end_index]</span><br><span class="line">    </span><br><span class="line">    partial_train_data = np.concatenate(</span><br><span class="line">        [train_data[:fold_start_index], train_data[fold_end_index:]], </span><br><span class="line">        axis=<span class="number">0</span></span><br><span class="line">    )</span><br><span class="line">    </span><br><span class="line">    partial_train_targets = np.concatenate(</span><br><span class="line">        [train_targets[:fold_start_index], train_targets[fold_end_index:]],</span><br><span class="line">        axis=<span class="number">0</span></span><br><span class="line">    )</span><br><span class="line">    </span><br><span class="line">    model = build_network((partial_train_data.shape[<span class="number">1</span>], ))</span><br><span class="line">    history = model.fit(</span><br><span class="line">        partial_train_data,</span><br><span class="line">        partial_train_targets,</span><br><span class="line">        epochs=num_epochs, </span><br><span class="line">        validation_data=(val_data, val_targets),</span><br><span class="line">        batch_size=<span class="number">1</span>,</span><br><span class="line">        verbose=<span class="number">0</span></span><br><span class="line">    )</span><br><span class="line">    val_mse, val_mae = model.evaluate(val_data, val_targets, verbose=<span class="number">0</span>)</span><br><span class="line">    all_scores.append(val_mse)</span><br><span class="line">    all_history.append(history.history)</span><br></pre></td></tr></table></figure>
+<pre><code>폴드 번호 #0
+폴드 번호 #1
+폴드 번호 #2
+폴드 번호 #3
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">val_mae_lst = map(<span class="keyword">lambda</span> x: x[<span class="string">'val_mean_absolute_error'</span>], all_history)</span><br><span class="line">val_mae_lst = np.array(list(val_mae_lst))</span><br><span class="line">avg_mae = [</span><br><span class="line">    np.mean([x[i] <span class="keyword">for</span> x <span class="keyword">in</span> val_mae_lst]) <span class="keyword">for</span> i <span class="keyword">in</span> range(num_epochs)</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h2 id="검증-데이터-시각화"><a href="#검증-데이터-시각화" class="headerlink" title="검증 데이터 시각화"></a>검증 데이터 시각화</h2><p>검증 데이터 시각화를 위해 history 데이터를 에폭별 평균 데이터로 치환시킨다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">val_mae_lst = map(<span class="keyword">lambda</span> x: x[<span class="string">'val_mean_absolute_error'</span>], all_history)</span><br><span class="line">val_mae_lst = np.array(list(val_mae_lst))</span><br><span class="line">avg_mae = [</span><br><span class="line">    np.mean([x[i] <span class="keyword">for</span> x <span class="keyword">in</span> val_mae_lst]) <span class="keyword">for</span> i <span class="keyword">in</span> range(num_epochs)</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>그래프 변동이 심하지 않도록 이전 포인트의 지수 이동 평균값으로 변경시켜주는 함수를 만든다</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">smooth_curve</span><span class="params">(points, factor=<span class="number">.9</span>)</span>:</span></span><br><span class="line">    smoothed_points = []</span><br><span class="line">    <span class="keyword">for</span> point <span class="keyword">in</span> points:</span><br><span class="line">        <span class="keyword">if</span> smoothed_points:</span><br><span class="line">            previous = smoothed_points[<span class="number">-1</span>]</span><br><span class="line">            smoothed_points.append(previous * factor + point * (<span class="number">1</span> - factor))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            smoothed_points.append(point)</span><br><span class="line">    <span class="keyword">return</span> smoothed_points</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show_graph</span><span class="params">(data)</span>:</span></span><br><span class="line">    smooth_data = smooth_curve(data)</span><br><span class="line">    plt.plot(range(<span class="number">1</span>, len(smooth_data) + <span class="number">1</span>), smooth_data)</span><br><span class="line">    plt.xlabel(<span class="string">'Epochs'</span>)</span><br><span class="line">    plt.ylabel(<span class="string">'Validation MAE'</span>)</span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show_graph(avg_mae[<span class="number">10</span>:])</span><br></pre></td></tr></table></figure>
+<p><img src="/resources/boston_linear_regression_files/boston_linear_regression_21_0.png" alt="png"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>Rogiry
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/2019/01/15/boston_linear_regression/" target="_blank" title="보스턴 집값 데이터를 이용한 선형 회귀">https://codingcrews.github.io/2019/01/15/boston_linear_regression/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+</div></div>
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80MjA4MC8xODYyNw==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/01/14/reuter_multi_classification/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">로이터 데이터셋을 이용한 뉴스 기사 다중 분류</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#선형-회귀-문제-Linear-Regression"><span class="nav-number">1.</span> <span class="nav-text">선형 회귀 문제 : Linear Regression</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Dataset"><span class="nav-number">2.</span> <span class="nav-text">Dataset</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Download"><span class="nav-number">2.1.</span> <span class="nav-text">Download</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dataset-shape-확인"><span class="nav-number">2.2.</span> <span class="nav-text">Dataset shape 확인</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#데이터-확인"><span class="nav-number">2.3.</span> <span class="nav-text">데이터 확인</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#데이터-변환"><span class="nav-number">2.4.</span> <span class="nav-text">데이터 변환</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#모델-구성"><span class="nav-number">3.</span> <span class="nav-text">모델 구성</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#K-Fold-Validation"><span class="nav-number">3.1.</span> <span class="nav-text">K-Fold Validation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#검증-데이터-시각화"><span class="nav-number">3.2.</span> <span class="nav-text">검증 데이터 시각화</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2019 - 2019 CodingCrew All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            CodingCrew
+          </div>
+          <div class="panel-body">
+            Copyright © 2019 Rogiry All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>
