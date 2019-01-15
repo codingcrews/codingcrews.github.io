@@ -8,6 +8,14 @@
     </url>
 
     <url>
+        <loc>https://codingcrews.github.io/2019/01/15/deeplearning-gpu/</loc>
+        <lastmod>2019-01-15T07:43:22.150Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://codingcrews.github.io/2019/01/15/boston_linear_regression/</loc>
         <lastmod>2019-01-14T18:09:34.885Z</lastmod>
         <changefreq>weekly</changefreq>
