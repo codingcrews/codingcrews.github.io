@@ -10,13 +10,6 @@
     </url>
 
     <url>
-        <loc>https://codingcrews.github.io/tags/ml/</loc>
-        <lastmod>2019-01-16T14:07:32.012Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://codingcrews.github.io/tags/dnn/</loc>
         <lastmod>2019-01-16T14:07:32.012Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -24,8 +17,22 @@
     </url>
 
     <url>
+        <loc>https://codingcrews.github.io/tags/ml/</loc>
+        <lastmod>2019-01-17T10:07:58.075Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
         <loc>https://codingcrews.github.io/tags/keras/</loc>
-        <lastmod>2019-01-16T14:07:32.012Z</lastmod>
+        <lastmod>2019-01-17T10:07:58.075Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://codingcrews.github.io/tags/cnn/</loc>
+        <lastmod>2019-01-17T10:07:58.075Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
