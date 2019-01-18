@@ -3,7 +3,7 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>개 고양이 분류하기 - cnn | CodingCrew</title>
+  <title>딥러닝으로 개와 고양이를 분류하는 딥러닝 모델을 만들어 보자. | CodingCrew</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
   <meta name="keywords" content="MLKerasCNN">
@@ -16,21 +16,21 @@
   
     <meta name="naver-site-verification" content="6e851ae0213de51257ab8801ac88ee25b5581313">
   
-  <meta name="description" content="개와 고양이 분류하기이번에는 개와 고양이 사진을 분류하는 모델을 만들어 봅시다.사람은 개와 고양이를 분류하기가 굉장히 쉽죠. 딱 보면 아니까요.하지만 컴퓨터 공학에서는 이걸 분류하는 문제가 해결하기 굉장히 어려운 문제였습니다.컴퓨터는 일일히 룰을 지정해가며 개와 고양이를 분류하도록 만들어야 했으니까요.   하지만 딥러닝이 이러한 문제들을 해결하면서 최근 비">
+  <meta name="description" content="개와 고양이 분류하기이번에는 CNN(Convolutional Neural Network)를 이용하여 개와 고양이 사진을 분류하는 모델을 만들어 봅시다.   사람은 개와 고양이를 분류하기가 굉장히 쉽죠. 딱 보면 아니까요.하지만 컴퓨터 공학에서는 이걸 분류하는 문제가 해결하기 굉장히 어려운 문제였습니다.컴퓨터는 일일히 룰을 지정해가며 개와 고양이를 분류하도록">
 <meta name="keywords" content="ML,Keras,CNN">
 <meta property="og:type" content="article">
-<meta property="og:title" content="개 고양이 분류하기 - CNN">
+<meta property="og:title" content="딥러닝으로 개와 고양이를 분류하는 딥러닝 모델을 만들어 보자.">
 <meta property="og:url" content="https://codingcrews.github.io/2019/01/17/cat-dog/index.html">
 <meta property="og:site_name" content="CodingCrew">
-<meta property="og:description" content="개와 고양이 분류하기이번에는 개와 고양이 사진을 분류하는 모델을 만들어 봅시다.사람은 개와 고양이를 분류하기가 굉장히 쉽죠. 딱 보면 아니까요.하지만 컴퓨터 공학에서는 이걸 분류하는 문제가 해결하기 굉장히 어려운 문제였습니다.컴퓨터는 일일히 룰을 지정해가며 개와 고양이를 분류하도록 만들어야 했으니까요.   하지만 딥러닝이 이러한 문제들을 해결하면서 최근 비">
+<meta property="og:description" content="개와 고양이 분류하기이번에는 CNN(Convolutional Neural Network)를 이용하여 개와 고양이 사진을 분류하는 모델을 만들어 봅시다.   사람은 개와 고양이를 분류하기가 굉장히 쉽죠. 딱 보면 아니까요.하지만 컴퓨터 공학에서는 이걸 분류하는 문제가 해결하기 굉장히 어려운 문제였습니다.컴퓨터는 일일히 룰을 지정해가며 개와 고양이를 분류하도록">
 <meta property="og:locale" content="ko">
 <meta property="og:image" content="https://codingcrews.github.io/resources/cat-dog_files/cat-dog_13_0.png">
 <meta property="og:image" content="https://codingcrews.github.io/resources/cat-dog_files/cat-dog_19_0.png">
 <meta property="og:image" content="https://codingcrews.github.io/resources/cat-dog_files/cat-dog_25_1.png">
-<meta property="og:updated_time" content="2019-01-17T14:28:09.509Z">
+<meta property="og:updated_time" content="2019-01-18T10:16:01.404Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="개 고양이 분류하기 - CNN">
-<meta name="twitter:description" content="개와 고양이 분류하기이번에는 개와 고양이 사진을 분류하는 모델을 만들어 봅시다.사람은 개와 고양이를 분류하기가 굉장히 쉽죠. 딱 보면 아니까요.하지만 컴퓨터 공학에서는 이걸 분류하는 문제가 해결하기 굉장히 어려운 문제였습니다.컴퓨터는 일일히 룰을 지정해가며 개와 고양이를 분류하도록 만들어야 했으니까요.   하지만 딥러닝이 이러한 문제들을 해결하면서 최근 비">
+<meta name="twitter:title" content="딥러닝으로 개와 고양이를 분류하는 딥러닝 모델을 만들어 보자.">
+<meta name="twitter:description" content="개와 고양이 분류하기이번에는 CNN(Convolutional Neural Network)를 이용하여 개와 고양이 사진을 분류하는 모델을 만들어 봅시다.   사람은 개와 고양이를 분류하기가 굉장히 쉽죠. 딱 보면 아니까요.하지만 컴퓨터 공학에서는 이걸 분류하는 문제가 해결하기 굉장히 어려운 문제였습니다.컴퓨터는 일일히 룰을 지정해가며 개와 고양이를 분류하도록">
 <meta name="twitter:image" content="https://codingcrews.github.io/resources/cat-dog_files/cat-dog_13_0.png">
   
     <link rel="alternate" href="/atom.xml" title="CodingCrew" type="application/atom+xml">
@@ -176,7 +176,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      개 고양이 분류하기 - CNN
+      딥러닝으로 개와 고양이를 분류하는 딥러닝 모델을 만들어 보자.
     </h1>
   
 
@@ -203,8 +203,9 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="개와-고양이-분류하기"><a href="#개와-고양이-분류하기" class="headerlink" title="개와 고양이 분류하기"></a>개와 고양이 분류하기</h1><p>이번에는 개와 고양이 사진을 분류하는 모델을 만들어 봅시다.<br>사람은 개와 고양이를 분류하기가 굉장히 쉽죠. 딱 보면 아니까요.<br>하지만 컴퓨터 공학에서는 이걸 분류하는 문제가 해결하기 굉장히 어려운 문제였습니다.<br>컴퓨터는 일일히 룰을 지정해가며 개와 고양이를 분류하도록 만들어야 했으니까요.  </p>
-<p>하지만 딥러닝이 이러한 문제들을 해결하면서 최근 비전 관련 문제들을 딥러닝으로 풀어내려는 시도가 많습니다.  </p>
+        <h1 id="개와-고양이-분류하기"><a href="#개와-고양이-분류하기" class="headerlink" title="개와 고양이 분류하기"></a>개와 고양이 분류하기</h1><p>이번에는 CNN(Convolutional Neural Network)를 이용하여 개와 고양이 사진을 분류하는 모델을 만들어 봅시다.  </p>
+<p>사람은 개와 고양이를 분류하기가 굉장히 쉽죠. 딱 보면 아니까요.<br>하지만 컴퓨터 공학에서는 이걸 분류하는 문제가 해결하기 굉장히 어려운 문제였습니다.<br>컴퓨터는 일일히 룰을 지정해가며 개와 고양이를 분류하도록 만들어야 하니까요.  </p>
+<p>그래서 최근에는 딥러닝이 이러한 문제들을 해결하면서 최근 비전 관련 문제들을 딥러닝으로 풀어내려는 시도가 많습니다.<br>오늘 소개할 CNN은 이미지 인식 등에서 기존의 전통적인 비전 프로세싱에 비해 높은 성능을 보여줍니다.  </p>
 <p>오늘 시도하는 튜토리얼은 CPU로 학습시키기엔 꽤 오랜 시간이 걸리므로 인내심을 가지고 학습을 진행하시거나,<br><a href="/2019/01/15/deeplearning-gpu/" target="_blank">AWS로 GPU 딥러닝 환경 구축하기</a> 포스팅을 참고하여 환경을 세팅한 뒤 진행해보세요.</p>
 <h1 id="Dataset"><a href="#Dataset" class="headerlink" title="Dataset"></a>Dataset</h1><p>이번 데이터셋은 kaggle에서 제공하는 데이터셋을 이용할 예정입니다.<br>MNIST 데이터셋은 흑백의 이미지였지만, 이번에 사용할 이미지는 컬러를 가지고 있습니다.  </p>
 <h2 id="Download"><a href="#Download" class="headerlink" title="Download"></a>Download</h2><p>직접 데이터셋을 배포하진 않고 있습니다.<br>데이터셋은 <a href="https://www.kaggle.com/tongpython/cat-and-dog" target="_blank" rel="noopener">여기</a>에서 직접 다운로드 받으실 수 있고, kaggle api를 통하여 받으실 수 있습니다.<br>로그인을 해야하니 만약 가입하지 않으셨다면 이번 기회에 가입해보시는걸 추천합니다.  </p>
@@ -426,7 +427,7 @@ Epoch 32/32
           </li>
           <li class="post-copyright-link">
           <strong>Post link:  </strong>
-          <a href="/2019/01/17/cat-dog/" target="_blank" title="개 고양이 분류하기 - CNN">https://codingcrews.github.io/2019/01/17/cat-dog/</a>
+          <a href="/2019/01/17/cat-dog/" target="_blank" title="딥러닝으로 개와 고양이를 분류하는 딥러닝 모델을 만들어 보자.">https://codingcrews.github.io/2019/01/17/cat-dog/</a>
           </li>
           <li class="post-copyright-license">
             <strong>Copyright Notice:   </strong>
@@ -475,7 +476,7 @@ Epoch 32/32
   
     <a href="/2019/01/17/mnist/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">MNIST 손글씨 분류하기</div>
+      <div class="article-nav-title">딥러닝으로 손글씨를 인식하는 모델을 만들어보자.</div>
     </a>
   
 </nav>

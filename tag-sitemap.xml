@@ -4,35 +4,35 @@
 
     <url>
         <loc>https://codingcrews.github.io/tags/aws/</loc>
-        <lastmod>2019-01-15T12:49:49.352Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://codingcrews.github.io/tags/dnn/</loc>
-        <lastmod>2019-01-16T14:07:32.012Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://codingcrews.github.io/tags/ml/</loc>
-        <lastmod>2019-01-18T03:56:21.766Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://codingcrews.github.io/tags/keras/</loc>
-        <lastmod>2019-01-18T03:56:21.766Z</lastmod>
+        <lastmod>2019-01-18T10:08:00.796Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://codingcrews.github.io/tags/cnn/</loc>
-        <lastmod>2019-01-18T03:56:21.766Z</lastmod>
+        <lastmod>2019-01-18T10:35:03.797Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://codingcrews.github.io/tags/ml/</loc>
+        <lastmod>2019-01-18T10:38:04.838Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://codingcrews.github.io/tags/dnn/</loc>
+        <lastmod>2019-01-18T10:38:04.838Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://codingcrews.github.io/tags/keras/</loc>
+        <lastmod>2019-01-18T10:38:04.838Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

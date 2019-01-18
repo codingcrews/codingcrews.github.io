@@ -8,40 +8,16 @@
     </url>
 
     <url>
-        <loc>https://codingcrews.github.io/2019/01/17/mnist/</loc>
-        <lastmod>2019-01-18T03:56:21.766Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://codingcrews.github.io/2019/01/17/cat-dog/</loc>
-        <lastmod>2019-01-17T14:28:09.509Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://codingcrews.github.io/2019/01/15/boston_linear_regression/</loc>
-        <lastmod>2019-01-16T14:07:32.012Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://codingcrews.github.io/2019/01/15/deeplearning-gpu/</loc>
-        <lastmod>2019-01-15T12:49:49.352Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
         <loc>https://codingcrews.github.io/2019/01/14/reuter_multi_classification/</loc>
-        <lastmod>2019-01-14T14:29:37.993Z</lastmod>
+        <lastmod>2019-01-18T10:38:04.838Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://codingcrews.github.io/2019/01/17/mnist/</loc>
+        <lastmod>2019-01-18T10:35:03.797Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -49,7 +25,31 @@
 
     <url>
         <loc>https://codingcrews.github.io/2019/01/11/imdb/</loc>
-        <lastmod>2019-01-10T16:55:57.810Z</lastmod>
+        <lastmod>2019-01-18T10:33:04.339Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://codingcrews.github.io/2019/01/17/cat-dog/</loc>
+        <lastmod>2019-01-18T10:16:01.404Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://codingcrews.github.io/2019/01/15/boston_linear_regression/</loc>
+        <lastmod>2019-01-18T10:13:55.128Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://codingcrews.github.io/2019/01/15/deeplearning-gpu/</loc>
+        <lastmod>2019-01-18T10:08:00.796Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 

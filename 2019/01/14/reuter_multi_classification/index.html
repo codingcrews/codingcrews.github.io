@@ -3,7 +3,7 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>로이터 데이터셋을 이용한 뉴스 기사 다중 분류 | CodingCrew</title>
+  <title>딥러닝으로 뉴스기사의 토픽을 분류해보자. | CodingCrew</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
   <meta name="keywords" content="MLDNNKeras">
@@ -16,20 +16,20 @@
   
     <meta name="naver-site-verification" content="6e851ae0213de51257ab8801ac88ee25b5581313">
   
-  <meta name="description" content="다중 분류 문제 : Multiple class classification이번 포스팅에서는 2개 이상의 클래스를 가진 경우 사용할 수 있는 다중 분류 문제를 해결해보도록 한다.   Dataset로이터 데이터셋을 사용하도록 한다.데이터셋은 46개의 토픽을 갖고 있으며 각 뉴스기사마다 하나의 토픽이 정해져있다.즉, 단일 레이블 다중분류 문제로 볼 수 있다. Do">
+  <meta name="description" content="다중 분류 문제 : Multiple class classification이전 포스팅에서 다룬 이진 분류 모델의 경우 예측할 수 있는 결과값이 긍정/부정 두가지 였습니다.하지만 뉴스의 토픽(예를들어 시사/인터넷/연예/스포츠 등)을 예측하기 위해선 이진 분류로는 토픽을 나눌 수 없습니다.   이번 포스팅에서는 2개 이상의 클래스를 가진 경우 사용할 수 있는 다">
 <meta name="keywords" content="ML,DNN,Keras">
 <meta property="og:type" content="article">
-<meta property="og:title" content="로이터 데이터셋을 이용한 뉴스 기사 다중 분류">
+<meta property="og:title" content="딥러닝으로 뉴스기사의 토픽을 분류해보자.">
 <meta property="og:url" content="https://codingcrews.github.io/2019/01/14/reuter_multi_classification/index.html">
 <meta property="og:site_name" content="CodingCrew">
-<meta property="og:description" content="다중 분류 문제 : Multiple class classification이번 포스팅에서는 2개 이상의 클래스를 가진 경우 사용할 수 있는 다중 분류 문제를 해결해보도록 한다.   Dataset로이터 데이터셋을 사용하도록 한다.데이터셋은 46개의 토픽을 갖고 있으며 각 뉴스기사마다 하나의 토픽이 정해져있다.즉, 단일 레이블 다중분류 문제로 볼 수 있다. Do">
+<meta property="og:description" content="다중 분류 문제 : Multiple class classification이전 포스팅에서 다룬 이진 분류 모델의 경우 예측할 수 있는 결과값이 긍정/부정 두가지 였습니다.하지만 뉴스의 토픽(예를들어 시사/인터넷/연예/스포츠 등)을 예측하기 위해선 이진 분류로는 토픽을 나눌 수 없습니다.   이번 포스팅에서는 2개 이상의 클래스를 가진 경우 사용할 수 있는 다">
 <meta property="og:locale" content="ko">
 <meta property="og:image" content="https://codingcrews.github.io/resources/reuter_multi_classification_files/reuter_multi_classification_27_0.png">
 <meta property="og:image" content="https://codingcrews.github.io/resources/reuter_multi_classification_files/reuter_multi_classification_41_0.png">
-<meta property="og:updated_time" content="2019-01-14T14:29:37.993Z">
+<meta property="og:updated_time" content="2019-01-18T10:38:04.838Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="로이터 데이터셋을 이용한 뉴스 기사 다중 분류">
-<meta name="twitter:description" content="다중 분류 문제 : Multiple class classification이번 포스팅에서는 2개 이상의 클래스를 가진 경우 사용할 수 있는 다중 분류 문제를 해결해보도록 한다.   Dataset로이터 데이터셋을 사용하도록 한다.데이터셋은 46개의 토픽을 갖고 있으며 각 뉴스기사마다 하나의 토픽이 정해져있다.즉, 단일 레이블 다중분류 문제로 볼 수 있다. Do">
+<meta name="twitter:title" content="딥러닝으로 뉴스기사의 토픽을 분류해보자.">
+<meta name="twitter:description" content="다중 분류 문제 : Multiple class classification이전 포스팅에서 다룬 이진 분류 모델의 경우 예측할 수 있는 결과값이 긍정/부정 두가지 였습니다.하지만 뉴스의 토픽(예를들어 시사/인터넷/연예/스포츠 등)을 예측하기 위해선 이진 분류로는 토픽을 나눌 수 없습니다.   이번 포스팅에서는 2개 이상의 클래스를 가진 경우 사용할 수 있는 다">
 <meta name="twitter:image" content="https://codingcrews.github.io/resources/reuter_multi_classification_files/reuter_multi_classification_27_0.png">
   
     <link rel="alternate" href="/atom.xml" title="CodingCrew" type="application/atom+xml">
@@ -175,7 +175,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      로이터 데이터셋을 이용한 뉴스 기사 다중 분류
+      딥러닝으로 뉴스기사의 토픽을 분류해보자.
     </h1>
   
 
@@ -202,13 +202,14 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="다중-분류-문제-Multiple-class-classification"><a href="#다중-분류-문제-Multiple-class-classification" class="headerlink" title="다중 분류 문제 : Multiple class classification"></a>다중 분류 문제 : Multiple class classification</h1><p>이번 포스팅에서는 2개 이상의 클래스를 가진 경우 사용할 수 있는 다중 분류 문제를 해결해보도록 한다.  </p>
-<h1 id="Dataset"><a href="#Dataset" class="headerlink" title="Dataset"></a>Dataset</h1><p>로이터 데이터셋을 사용하도록 한다.<br>데이터셋은 46개의 토픽을 갖고 있으며 각 뉴스기사마다 하나의 토픽이 정해져있다.<br>즉, 단일 레이블 다중분류 문제로 볼 수 있다.</p>
+        <h1 id="다중-분류-문제-Multiple-class-classification"><a href="#다중-분류-문제-Multiple-class-classification" class="headerlink" title="다중 분류 문제 : Multiple class classification"></a>다중 분류 문제 : Multiple class classification</h1><p>이전 포스팅에서 다룬 이진 분류 모델의 경우 예측할 수 있는 결과값이 긍정/부정 두가지 였습니다.<br>하지만 뉴스의 토픽(예를들어 시사/인터넷/연예/스포츠 등)을 예측하기 위해선 이진 분류로는 토픽을 나눌 수 없습니다.  </p>
+<p>이번 포스팅에서는 2개 이상의 클래스를 가진 경우 사용할 수 있는 다중 분류 문제를 해결해보도록 하겠습니다.  </p>
+<h1 id="Dataset"><a href="#Dataset" class="headerlink" title="Dataset"></a>Dataset</h1><p>저희는 로이터 데이터셋을 사용하도록 합니다.<br>해당 데이터셋은 46개의 토픽을 갖고 있으며 각 뉴스기사마다 하나의 토픽이 정해져있습니다.<br>즉, 단일 레이블 다중분류 문제로 볼 수 있습니다.  </p>
 <h2 id="Download"><a href="#Download" class="headerlink" title="Download"></a>Download</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tensorflow.keras.datasets <span class="keyword">import</span> reuters</span><br><span class="line">(train_data, train_labels), (test_data, test_labels) = reuters.load_data(num_words=<span class="number">10000</span>)</span><br></pre></td></tr></table></figure>
 <h2 id="Dataset-shape-확인"><a href="#Dataset-shape-확인" class="headerlink" title="Dataset shape 확인"></a>Dataset shape 확인</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">"Train Datas Shape : &#123;&#125;"</span>.format(train_data.shape))</span><br><span class="line">print(<span class="string">"Train Labels Shape : &#123;&#125;"</span>.format(train_labels.shape))</span><br></pre></td></tr></table></figure>
 <pre><code>Train Datas Shape : (8982,)
 Train Labels Shape : (8982,)
-</code></pre><h2 id="데이터-확인"><a href="#데이터-확인" class="headerlink" title="데이터 확인"></a>데이터 확인</h2><p>확인한대로 8982개의 훈련 데이터셋이 존재하며,<br>각 인덱스는 단어 인덱스의 리스트를 뜻 한다.</p>
+</code></pre><h2 id="데이터-확인"><a href="#데이터-확인" class="headerlink" title="데이터 확인"></a>데이터 확인</h2><p>확인한대로 8982개의 훈련 데이터셋이 존재하며,<br>각 인덱스는 단어 인덱스의 리스트를 뜻 합니다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">display(train_data[<span class="number">0</span>][:<span class="number">10</span>])</span><br><span class="line">display(train_labels)</span><br><span class="line"></span><br><span class="line">display(test_labels)</span><br></pre></td></tr></table></figure>
 <pre><code>[1, 2, 2, 8, 43, 10, 447, 5, 25, 207]
 
@@ -221,10 +222,10 @@ array([ 3,  4,  3, ..., 25,  3, 25])
 array([ 3, 10,  1, ...,  3,  3, 24])
 </code></pre><h3 id="단어를-텍스트로-디코딩"><a href="#단어를-텍스트로-디코딩" class="headerlink" title="단어를 텍스트로 디코딩"></a>단어를 텍스트로 디코딩</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">word_index = reuters.get_word_index()</span><br><span class="line">reverse_word_index = dict([(val, key) <span class="keyword">for</span> (key, val) <span class="keyword">in</span> word_index.items()])</span><br><span class="line">decoded_news = <span class="string">' '</span>.join([reverse_word_index.get(i - <span class="number">3</span>, <span class="string">'?'</span>) <span class="keyword">for</span> i <span class="keyword">in</span> train_data[<span class="number">0</span>]])</span><br><span class="line">print(decoded_news)</span><br></pre></td></tr></table></figure>
 <pre><code>? ? ? said as a result of its december acquisition of space co it expects earnings per share in 1987 of 1 15 to 1 30 dlrs per share up from 70 cts in 1986 the company said pretax net should rise to nine to 10 mln dlrs from six mln dlrs in 1986 and rental operation revenues to 19 to 22 mln dlrs from 12 5 mln dlrs it said cash flow per share this year should be 2 50 to three dlrs reuter 3
-</code></pre><h3 id="라벨-확인"><a href="#라벨-확인" class="headerlink" title="라벨 확인"></a>라벨 확인</h3><p>샘플의 라벨은 토픽의 인덱스로써 0~45의 값을 가진다.</p>
+</code></pre><h3 id="라벨-확인"><a href="#라벨-확인" class="headerlink" title="라벨 확인"></a>라벨 확인</h3><p>샘플의 라벨은 토픽의 인덱스로써 0~45의 값을 가집니다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">train_labels[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
 <pre><code>3
-</code></pre><h3 id="데이터-변환"><a href="#데이터-변환" class="headerlink" title="데이터 변환"></a>데이터 변환</h3><p>학습에 용이하도록 뉴스 기사와 라벨 데이터를 벡터로 변환시킨다.<br>학습에 사용되는 데이터셋의 인풋 데이터는 해당 뉴스 기사의 들어가있는 단어 인덱스를 1.0 으로 변경시킨다.  </p>
+</code></pre><h3 id="데이터-변환"><a href="#데이터-변환" class="headerlink" title="데이터 변환"></a>데이터 변환</h3><p>학습에 용이하도록 뉴스 기사와 라벨 데이터를 벡터로 변환시킵니다.<br>학습에 사용되는 데이터셋의 인풋 데이터는 해당 뉴스 기사의 들어가있는 단어 인덱스를 1.0 으로 변경시킵니다.  </p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">vectorize_sequences</span><span class="params">(sequences, dimension=<span class="number">10000</span>)</span>:</span></span><br><span class="line">    results = np.zeros((len(sequences), dimension)) <span class="comment"># 크기가 들어온 리스트 (단어개수, 전체단어개수)이고, 모든 원소가 0인 행렬을 생성</span></span><br><span class="line">    <span class="keyword">for</span> i, sequence <span class="keyword">in</span> enumerate(sequences):</span><br><span class="line">        results[i, sequence] = <span class="number">1.</span></span><br><span class="line">    <span class="keyword">return</span> results</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tensorflow.keras.utils <span class="keyword">import</span> to_categorical</span><br><span class="line"></span><br><span class="line">x_train = vectorize_sequences(train_data)</span><br><span class="line">x_test = vectorize_sequences(test_data)</span><br><span class="line"></span><br><span class="line">display(x_train.shape)</span><br><span class="line">display(x_test.shape)</span><br><span class="line"></span><br><span class="line">one_hot_train_labels = to_categorical(train_labels)</span><br><span class="line">one_hot_test_labels = to_categorical(test_labels)</span><br><span class="line"></span><br><span class="line">display(one_hot_train_labels.shape)</span><br><span class="line">display(one_hot_test_labels.shape)</span><br></pre></td></tr></table></figure>
 <pre><code>(8982, 10000)
@@ -240,9 +241,9 @@ array([ 3, 10,  1, ...,  3,  3, 24])
 
 
 (2246, 46)
-</code></pre><h1 id="신경망-구성"><a href="#신경망-구성" class="headerlink" title="신경망 구성"></a>신경망 구성</h1><p>단일 레이블 다중 분류를 위한 모델을 작성 해보도록 하겠다.<br>다만 레이어 구축 시 참고해야 할 부분이 있는데,<br>각 레이어를 통과 할 때 유닛의 수가 레이블 보다 적다면 가지고 있어야 할 정보가 많이 사라질 수 있다.  </p>
-<p>학습 시 파라미터를 줄이기 위해서나 노이즈를 줄이기 위해서 유닛을 줄이는 경우도 있지만,<br>데이터가 가지고 있어야 할 필수 데이터를 잃어버릴 수 있다는 점도 참고하여 네트워크를 구성해야 한다.</p>
-<h2 id="신경망-네트워크-구축"><a href="#신경망-네트워크-구축" class="headerlink" title="신경망 네트워크 구축"></a>신경망 네트워크 구축</h2><p>로이터 데이터셋의 단어수를 10,000개로 제한해두었으니,<br>신경망의 입력 차원수도 10,000으로 설정한다.</p>
+</code></pre><h1 id="신경망-구성"><a href="#신경망-구성" class="headerlink" title="신경망 구성"></a>신경망 구성</h1><p>단일 레이블 다중 분류를 위한 모델을 작성 해보도록 하겠습니다.<br>다만 레이어 구축 시 참고해야 할 부분이 있는데,<br>각 레이어를 통과 할 때 유닛의 수가 레이블 보다 적다면 가지고 있어야 할 정보가 많이 사라질 수 있습니다.  </p>
+<p>학습 시 파라미터를 줄이기 위해서나 노이즈를 줄이기 위해서 유닛을 줄이는 경우도 있지만,<br>데이터가 가지고 있어야 할 필수 데이터를 잃어버릴 수 있다는 점도 참고하여 네트워크를 구성해야 합니다.</p>
+<h2 id="신경망-네트워크-구축"><a href="#신경망-네트워크-구축" class="headerlink" title="신경망 네트워크 구축"></a>신경망 네트워크 구축</h2><p>로이터 데이터셋의 단어수를 10,000개로 제한해두었으니,<br>신경망의 입력 차원수도 10,000으로 설정합니다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> models</span><br><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> layers</span><br><span class="line"></span><br><span class="line">model = models.Sequential()</span><br><span class="line">model.add(layers.Dense(<span class="number">64</span>, activation=<span class="string">'relu'</span>, input_shape=(<span class="number">10000</span>, )))</span><br><span class="line">model.add(layers.Dense(<span class="number">64</span>, activation=<span class="string">'relu'</span>))</span><br><span class="line">model.add(layers.Dense(<span class="number">46</span>, activation=<span class="string">'softmax'</span>))</span><br><span class="line"></span><br><span class="line">model.summary()</span><br></pre></td></tr></table></figure>
 <pre><code>_________________________________________________________________
 Layer (type)                 Output Shape              Param #   
@@ -260,7 +261,7 @@ _________________________________________________________________
 </code></pre><p>이진분류와 비슷하게 마지막 Dense 레이어의 아웃풋 벡터 개수는(46개) 예측하기 위한 클래스의 개수와 동일합니다.<br>다른점은 이진 분류에서는 활성함수로 sigmoid를 사용한 반면 여기서는 softmax를 이용했는데,<br>softmax는 각 클래스별로 해당 클래스 일 확률을 표시하도록 만들어집니다.   </p>
 <h2 id="모델-컴파일"><a href="#모델-컴파일" class="headerlink" title="모델 컴파일"></a>모델 컴파일</h2><p>다중 분류에서 손실함수로써는 categorical_crossentropy를 주로 사용합니다.<br>옵티마이저는 가장 빠르고 효과가 좋다고 알려진 adam 옵티마이저를 사용하도록 설정합니다.  </p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">model.compile(</span><br><span class="line">    optimizer=<span class="string">'adam'</span>,</span><br><span class="line">    loss=<span class="string">'categorical_crossentropy'</span>,</span><br><span class="line">    metrics=[<span class="string">'accuracy'</span>],</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<h2 id="검증-데이터셋-구성"><a href="#검증-데이터셋-구성" class="headerlink" title="검증 데이터셋 구성"></a>검증 데이터셋 구성</h2><p>훈련용 데이터셋에서 Validation으로 사용할 데이터셋을 분리시킨다.</p>
+<h2 id="검증-데이터셋-구성"><a href="#검증-데이터셋-구성" class="headerlink" title="검증 데이터셋 구성"></a>검증 데이터셋 구성</h2><p>훈련용 데이터셋에서 Validation으로 사용할 데이터셋을 분리시킵니다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">x_val = x_train[:<span class="number">1000</span>]</span><br><span class="line">partial_x_train = x_train[<span class="number">1000</span>:]</span><br><span class="line"></span><br><span class="line">y_val = one_hot_train_labels[:<span class="number">1000</span>]</span><br><span class="line">partial_y_train = one_hot_train_labels[<span class="number">1000</span>:]</span><br></pre></td></tr></table></figure>
 <h1 id="모델-학습"><a href="#모델-학습" class="headerlink" title="모델 학습"></a>모델 학습</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">history = model.fit(</span><br><span class="line">    partial_x_train, </span><br><span class="line">    partial_y_train,</span><br><span class="line">    epochs=<span class="number">20</span>,</span><br><span class="line">    batch_size=<span class="number">512</span>,</span><br><span class="line">    validation_data=(x_val, y_val)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
 <pre><code>Train on 7982 samples, validate on 1000 samples
@@ -304,7 +305,7 @@ Epoch 19/20
 7982/7982 [==============================] - 1s 80us/step - loss: 0.1055 - acc: 0.9624 - val_loss: 1.0214 - val_acc: 0.8130
 Epoch 20/20
 7982/7982 [==============================] - 1s 81us/step - loss: 0.0979 - acc: 0.9622 - val_loss: 0.9970 - val_acc: 0.8150
-</code></pre><h2 id="훈련의-정확도와-손실-시각화"><a href="#훈련의-정확도와-손실-시각화" class="headerlink" title="훈련의 정확도와 손실 시각화"></a>훈련의 정확도와 손실 시각화</h2><p>이전 이진분류 포스팅에서 사용했던 함수를 그대로 끌어와 사용하도록 한다.</p>
+</code></pre><h2 id="훈련의-정확도와-손실-시각화"><a href="#훈련의-정확도와-손실-시각화" class="headerlink" title="훈련의 정확도와 손실 시각화"></a>훈련의 정확도와 손실 시각화</h2><p>이전 이진분류 포스팅에서 사용했던 함수를 그대로 끌어와 사용하도록 합니다.  </p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show_graph</span><span class="params">(history)</span>:</span></span><br><span class="line">    history_dict = history.history</span><br><span class="line">    accuracy = history_dict[<span class="string">'acc'</span>]</span><br><span class="line">    val_accuracy = history_dict[<span class="string">'val_acc'</span>]</span><br><span class="line">    loss = history_dict[<span class="string">'loss'</span>]</span><br><span class="line">    val_loss = history_dict[<span class="string">'val_loss'</span>]</span><br><span class="line"></span><br><span class="line">    epochs = range(<span class="number">1</span>, len(loss) + <span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">    plt.figure(figsize=(<span class="number">16</span>, <span class="number">1</span>))</span><br><span class="line">    </span><br><span class="line">    plt.subplot(<span class="number">121</span>)</span><br><span class="line">    plt.subplots_adjust(top=<span class="number">2</span>)</span><br><span class="line">    plt.plot(epochs, accuracy, <span class="string">'ro'</span>, label=<span class="string">'Training accuracy'</span>)</span><br><span class="line">    plt.plot(epochs, val_accuracy, <span class="string">'r'</span>, label=<span class="string">'Validation accuracy'</span>)</span><br><span class="line">    plt.title(<span class="string">'Trainging and validation accuracy'</span>)</span><br><span class="line">    plt.xlabel(<span class="string">'Epochs'</span>)</span><br><span class="line">    plt.ylabel(<span class="string">'Accuracy and Loss'</span>)</span><br><span class="line"></span><br><span class="line">    plt.legend(loc=<span class="string">'upper center'</span>, bbox_to_anchor=(<span class="number">0.5</span>, <span class="number">-0.1</span>),</span><br><span class="line">              fancybox=<span class="keyword">True</span>, shadow=<span class="keyword">True</span>, ncol=<span class="number">5</span>)</span><br><span class="line"><span class="comment">#     plt.legend(bbox_to_anchor=(1, -0.1))</span></span><br><span class="line"></span><br><span class="line">    plt.subplot(<span class="number">122</span>)</span><br><span class="line">    plt.plot(epochs, loss, <span class="string">'bo'</span>, label=<span class="string">'Training loss'</span>)</span><br><span class="line">    plt.plot(epochs, val_loss, <span class="string">'b'</span>, label=<span class="string">'Validation loss'</span>)</span><br><span class="line">    plt.title(<span class="string">'Training and validation loss'</span>)</span><br><span class="line">    plt.xlabel(<span class="string">'Epochs'</span>)</span><br><span class="line">    plt.ylabel(<span class="string">'Loss'</span>)</span><br><span class="line">    plt.legend(loc=<span class="string">'upper center'</span>, bbox_to_anchor=(<span class="number">0.5</span>, <span class="number">-0.1</span>),</span><br><span class="line">          fancybox=<span class="keyword">True</span>, shadow=<span class="keyword">True</span>, ncol=<span class="number">5</span>)</span><br><span class="line"><span class="comment">#     plt.legend(bbox_to_anchor=(1, 0))</span></span><br><span class="line"></span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show_graph(history)</span><br></pre></td></tr></table></figure>
 <p><img src="/resources/reuter_multi_classification_files/reuter_multi_classification_27_0.png" alt="png"></p>
@@ -323,7 +324,7 @@ Epoch 20/20
 
 0.96262544
 </code></pre><p>predictions[0]의 3번째 인덱스가 가장 큰 값을 가진걸 확인하였고,<br>해당 인덱스의 값을 확인하였더니 0.96262544(96.262544%)로 모델이 예측한걸 확인할 수 있습니다.</p>
-<h2 id="데이터-레이블-인코딩-방식-변경하여-학습하기"><a href="#데이터-레이블-인코딩-방식-변경하여-학습하기" class="headerlink" title="데이터 레이블 인코딩 방식 변경하여 학습하기"></a>데이터 레이블 인코딩 방식 변경하여 학습하기</h2><p>one hot 인코딩이 아닌 정수형으로 토픽을 예측하도록 레이블 인코딩을 사용하도록 변경해본다.<br>손실함수를 변경해주면 되는데,<br>categorical_crossentropy는 범주형 인코딩일 시 사용하는 손실함수이고,<br>정수형을 사용할 때에는 sparse_categorical_crossentropy를 사용한다.</p>
+<h2 id="데이터-레이블-인코딩-방식-변경하여-학습하기"><a href="#데이터-레이블-인코딩-방식-변경하여-학습하기" class="headerlink" title="데이터 레이블 인코딩 방식 변경하여 학습하기"></a>데이터 레이블 인코딩 방식 변경하여 학습하기</h2><p>one hot 인코딩이 아닌 정수형으로 토픽을 예측하도록 레이블 인코딩을 사용하도록 변경해봅니다.<br>손실함수를 변경해주면 되는데,<br>categorical_crossentropy는 범주형 인코딩일 시 사용하는 손실함수이고,<br>정수형을 사용할 때에는 sparse_categorical_crossentropy를 사용합니다.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">y_train = np.array(train_labels)</span><br><span class="line">y_test = np.array(test_labels)</span><br><span class="line"></span><br><span class="line">x_val = x_train[:<span class="number">1000</span>]</span><br><span class="line">partial_x_train = x_train[<span class="number">1000</span>:]</span><br><span class="line"></span><br><span class="line">y_val = y_train[:<span class="number">1000</span>]</span><br><span class="line">partial_y_train = y_train[<span class="number">1000</span>:]</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">model = models.Sequential()</span><br><span class="line">model.add(layers.Dense(<span class="number">64</span>, activation=<span class="string">'relu'</span>, input_shape=(<span class="number">10000</span>, )))</span><br><span class="line">model.add(layers.Dense(<span class="number">64</span>, activation=<span class="string">'relu'</span>))</span><br><span class="line">model.add(layers.Dense(<span class="number">46</span>, activation=<span class="string">'softmax'</span>))</span><br><span class="line"></span><br><span class="line">model.summary()</span><br></pre></td></tr></table></figure>
 <pre><code>_________________________________________________________________
@@ -362,8 +363,8 @@ Epoch 9/9
 7982/7982 [==============================] - 1s 78us/step - loss: 0.3116 - acc: 0.9346 - val_loss: 0.8843 - val_acc: 0.8190
 </code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show_graph(history)</span><br></pre></td></tr></table></figure>
 <p><img src="/resources/reuter_multi_classification_files/reuter_multi_classification_41_0.png" alt="png"></p>
-<p>예측하는 방법은 아까와 동일하고,<br>출력된 레이블 또한 softmax처럼 각 클래스 별 확률이 나오게 된다.<br>9번의 에폭에서 과대적합 되던걸 확인하여 이번 학습은 최대 에폭을 9로 설정하여 학습을 진행한 내용의 그래프이다.</p>
-<h1 id="추가-개선사항"><a href="#추가-개선사항" class="headerlink" title="추가 개선사항"></a>추가 개선사항</h1><p>중간 레이어의 유닛수가 너무 작게 되면 데이터에 대한 손실이 발생할 수 있지만,<br>데이터를 압축하여 노이즈를 줄이는 효과를 얻을 수도 있고, 반대로 유닛수를 크게 한다면,<br>해당 레이블을 표현하기 위한 데이터를 더 넣을 수 있게 된다고 볼 수도 있다.<br>이러한 내용을 잘 숙지하여 레이어 구성을 변경해가며 테스트를 진행해보자.</p>
+<p>예측하는 방법은 아까와 동일하고,<br>출력된 레이블 또한 softmax처럼 각 클래스 별 확률이 나오게 됩니다.<br>9번의 에폭에서 과대적합 되던걸 확인하여 이번 학습은 최대 에폭을 9로 설정하여 학습을 진행한 내용의 그래프입니다.</p>
+<h1 id="추가-개선사항"><a href="#추가-개선사항" class="headerlink" title="추가 개선사항"></a>추가 개선사항</h1><p>중간 레이어의 유닛수가 너무 작게 되면 데이터에 대한 손실이 발생할 수 있지만,<br>데이터를 압축하여 노이즈를 줄이는 효과를 얻을 수도 있고, 반대로 유닛수를 크게 한다면,<br>해당 레이블을 표현하기 위한 데이터를 더 넣을 수 있게 된다고 볼 수도 있습니다.<br>이러한 내용을 잘 숙지하여 레이어 구성을 변경해가며 테스트를 진행해봅시다.</p>
 
       
     </div>
@@ -377,7 +378,7 @@ Epoch 9/9
           </li>
           <li class="post-copyright-link">
           <strong>Post link:  </strong>
-          <a href="/2019/01/14/reuter_multi_classification/" target="_blank" title="로이터 데이터셋을 이용한 뉴스 기사 다중 분류">https://codingcrews.github.io/2019/01/14/reuter_multi_classification/</a>
+          <a href="/2019/01/14/reuter_multi_classification/" target="_blank" title="딥러닝으로 뉴스기사의 토픽을 분류해보자.">https://codingcrews.github.io/2019/01/14/reuter_multi_classification/</a>
           </li>
           <li class="post-copyright-license">
             <strong>Copyright Notice:   </strong>
@@ -427,7 +428,7 @@ Epoch 9/9
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          보스턴 집값 데이터를 이용한 선형 회귀
+          딥러닝으로 보스턴의 집값을 예측해보자.
         
       </div>
     </a>
@@ -435,7 +436,7 @@ Epoch 9/9
   
     <a href="/2019/01/11/imdb/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">IMDB 데이터셋을 이용한 영화 리뷰 분류</div>
+      <div class="article-nav-title">딥러닝으로 영화 리뷰의 긍정/부정 이진 분류 모델 만들기</div>
     </a>
   
 </nav>
