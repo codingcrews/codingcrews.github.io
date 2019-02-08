@@ -3,11 +3,11 @@
   xmlns:atom="http://www.w3.org/2005/Atom"
   xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>CodingCrew</title>
+    <title>코딩크루</title>
     <link>https://codingcrews.github.io/</link>
     <atom:link href="/rss2.xml" rel="self" type="application/rss+xml"/>
     
-    <description>코딩크루</description>
+    <description>코딩이 어렵나요? 코딩크루와 함께 경험을 쌓아보세요.</description>
     <pubDate>Fri, 01 Feb 2019 23:14:14 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
